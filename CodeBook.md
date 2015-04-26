@@ -63,5 +63,5 @@ The label of the person who participated in the experiment. There are labeled wi
 
 #### Notes on feature variables:
 
-[See features_info.txt](https://github.com/weilu/clean-data-course-project/blob/master/UCI%20HAR%20Dataset/features_info.txt)
+The classes and units are the same as the original data set. [See features_info.txt](https://github.com/weilu/clean-data-course-project/blob/master/UCI%20HAR%20Dataset/features_info.txt)
 
