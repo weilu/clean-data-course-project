@@ -1,6 +1,11 @@
+# Constants
 DATA.DIR = 'UCI\ HAR\ Dataset'
 FEATURE.LABELS.FILEPATH = file.path(DATA.DIR, 'features.txt')
 ACTIVITY.LABELS.FILEPATH = file.path(DATA.DIR, 'activity_labels.txt')
+
+# Labels
+featureLabels <- read.table(FEATURE.LABELS.FILEPATH, colClasses="character")
+activityLabels <- read.table(ACTIVITY.LABELS.FILEPATH, colClasses="character", col.names = c("activityID", "activity"))
 
 allData <- NA
 
@@ -13,8 +18,13 @@ main <- function() {
   allData <<- rbind(testData, trainData)
 
   # meaningful labels for activities in every row
-  activityLabels <- read.table(ACTIVITY.LABELS.FILEPATH, colClasses="character", col.names = c("activityID", "activity"))
   merge(activityLabels, allData, by="activityID")
+
+  # extract only mean and standard deviation columns
+  meansAndStds <- sapply(featureLabels[, 2], grep, pattern = "mean|std", ignore.case = T, value = T)
+  keepColNames <- c(meansAndStds, "activity", "subject")
+  keepColNames <- unlist(unname(keepColNames))
+  pruned <- allData[, keepColNames]
 }
 
 # Take a directory, combine data from X_*.txt, y_*.txt, and subject_*.txt into
@@ -25,7 +35,6 @@ main <- function() {
 # returns: a data frame consisting of columns each named after its originating file
 buildDataFrame <- function(dirpath) {
   # prepare headers
-  featureLabels <- read.table(FEATURE.LABELS.FILEPATH, colClasses="character")
   headers <- c("subject", "activityID", featureLabels[, 2])
 
   # prepare data
