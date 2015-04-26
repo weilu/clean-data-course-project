@@ -14,7 +14,7 @@ R
 source('run_analysis.R')
 
 # verify the output
-data <- read.table('tidy.txt', header = TRUE)
+data <- read.table('tidy.txt', header = TRUE, check.names = FALSE)
 dim(data) # [1] 180  88
 View(data)
 
