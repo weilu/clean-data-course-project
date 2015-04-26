@@ -9,7 +9,8 @@ ACTIVITY.LABELS.FILEPATH = file.path(DATA.DIR, 'activity_labels.txt')
 featureLabels <- read.table(FEATURE.LABELS.FILEPATH, colClasses="character")
 activityLabels <- read.table(ACTIVITY.LABELS.FILEPATH, colClasses="character", col.names = c("activityID", "activity"))
 
-allData <- NA
+merged <- NA
+pruned <- NA
 
 main <- function() {
   # read test data and train data
@@ -17,16 +18,16 @@ main <- function() {
   trainData <- buildDataFrame(file.path(DATA.DIR, 'train'))
 
   # merge test data and train data into a single data frame
-  allData <<- rbind(testData, trainData)
+  merged <<- rbind(testData, trainData)
 
   # meaningful labels for activities in every row
-  allData <<- merge(activityLabels, allData, by="activityID")
+  merged <<- merge(activityLabels, merged, by="activityID")
 
   # extract only mean and standard deviation columns
   meansAndStds <- sapply(featureLabels[, 2], grep, pattern = "mean|std", ignore.case = T, value = T)
   keepColNames <- c(meansAndStds, "activity", "subject")
   keepColNames <- unlist(unname(keepColNames))
-  pruned <- allData[, keepColNames]
+  pruned <<- merged[, keepColNames]
 
   # produce the tidy data set with the average of each variable for each activity and each subject
   activeMelt <- melt(pruned, id=c("activity", "subject"))
