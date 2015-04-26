@@ -1,3 +1,5 @@
+library(reshape2)
+
 # Constants
 DATA.DIR = 'UCI\ HAR\ Dataset'
 FEATURE.LABELS.FILEPATH = file.path(DATA.DIR, 'features.txt')
@@ -25,6 +27,11 @@ main <- function() {
   keepColNames <- c(meansAndStds, "activity", "subject")
   keepColNames <- unlist(unname(keepColNames))
   pruned <- allData[, keepColNames]
+
+  # produce the tidy data set with the average of each variable for each activity and each subject
+  activeMelt <- melt(pruned, id=c("activity", "subject"))
+  activeData <- dcast(activeMelt, activity + subject ~ variable, mean)
+  write.table(activeData, 'tidy.txt', row.name = F)
 }
 
 # Take a directory, combine data from X_*.txt, y_*.txt, and subject_*.txt into
