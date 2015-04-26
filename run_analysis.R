@@ -20,7 +20,7 @@ main <- function() {
   allData <<- rbind(testData, trainData)
 
   # meaningful labels for activities in every row
-  merge(activityLabels, allData, by="activityID")
+  allData <<- merge(activityLabels, allData, by="activityID")
 
   # extract only mean and standard deviation columns
   meansAndStds <- sapply(featureLabels[, 2], grep, pattern = "mean|std", ignore.case = T, value = T)
@@ -54,7 +54,7 @@ buildDataFrame <- function(dirpath) {
   combined <- as.data.frame(combined)
   colnames(combined) <- headers
 
-  return combined
+  combined
 }
 
 main()
