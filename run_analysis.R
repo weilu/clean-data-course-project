@@ -36,11 +36,10 @@ main <- function() {
 }
 
 # Take a directory, combine data from X_*.txt, y_*.txt, and subject_*.txt into
-# a data frame with appropriately headers. The activities (in y_*.txt) are
-# also translated to descriptive names
+# a data frame with appropriately headers.
 #
 # param: a directory path
-# returns: a data frame consisting of columns each named after its originating file
+# returns: a data frame consisting of subject, activityID, and the measurement columns
 buildDataFrame <- function(dirpath) {
   # prepare headers
   headers <- c("subject", "activityID", featureLabels[, 2])
